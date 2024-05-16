@@ -7,19 +7,21 @@ import { getList } from './query';
 import { RestaurantList } from './index.type';
 import { filterPrice } from './query/filter';
 import { formatRupiah } from './utils/currencyFormat';
+import ContainerItemsCard from './components/ContainerItemsCard';
 
 export default function Home() {
 	const [isOpenNow, setIsOpenNow] = useState<boolean | null>(null);
 	const [currPrice, setCurrPrice] = useState<number>(0);
 	const [currCategory, setCurrCategory] = useState('');
 	const [categories, setCategories] = useState<string[]>([]);
-	const [item, setItem] = useState<RestaurantList[]>([]);
+	const [item, setItem] = useState<RestaurantList[] | undefined>(undefined);
 
 	const query = useQuery({
 		queryKey: ['restaurants', currCategory],
 		queryFn: () => getList(currCategory),
 	});
 
+	// handle on init browser data
 	useEffect(() => {
 		const collected = window.localStorage.getItem('collected');
 		const category = window.localStorage.getItem('category');
@@ -51,26 +53,33 @@ export default function Home() {
 	}, [currPrice, isOpenNow]);
 
 	// server side searching
+	// handle on category change
 	useEffect(() => {
 		window.localStorage.removeItem('collected');
 	}, [currCategory]);
 
+	// filter price
 	const handleChangePriceFilter = (
 		event: React.ChangeEvent<HTMLSelectElement>
 	) => {
 		setCurrPrice(Number(event.target.value));
 	};
+
+	// filter category
 	const handleChangeCategoryFilter = (
 		event: React.ChangeEvent<HTMLSelectElement>
 	) => {
 		setCurrCategory(event.target.value);
 	};
+
+	// clear filter
 	const handleClearFilter = () => {
 		setIsOpenNow(null);
 		setCurrPrice(0);
 		setCurrCategory('');
 	};
 
+	// filter data collection on each search
 	const filterDataCollection = (
 		isOpenNow: boolean | null,
 		currPrice: number
@@ -87,10 +96,11 @@ export default function Home() {
 			setItem(filteredItem);
 		}
 	};
+
 	return (
 		<AppLayout>
 			<main>
-				<div className='space-y-5'>
+				<div className='flex flex-col gap-y-7'>
 					<div className='px-10 space-y-5'>
 						<h1 className='text-4xl'>Restaurants</h1>
 						<p className='text-gray-500 max-w-xl '>
@@ -98,7 +108,7 @@ export default function Home() {
 							eiusmod tempor incididunt ut labore et dolore magna aliqua.
 						</p>
 					</div>
-					<div className='py-3 border-y border-gray-300 flex justify-between items-center flex-wrap gap-y-3'>
+					<div className='py-3 border-y border-gray-300/65 flex justify-between items-center flex-wrap gap-y-3 mt-1'>
 						<div className='px-10 flex gap-x-5 gap-y-2 flex-wrap items-center'>
 							<span>Filter by:</span>
 							<div className='flex flex-wrap gap-x-4 gap-y-3'>
@@ -155,8 +165,11 @@ export default function Home() {
 							</button>
 						</div>
 					</div>
+					<ContainerItemsCard
+						item={item}
+						query={query}
+					/>
 				</div>
-				<section className='px-10'></section>
 			</main>
 		</AppLayout>
 	);
