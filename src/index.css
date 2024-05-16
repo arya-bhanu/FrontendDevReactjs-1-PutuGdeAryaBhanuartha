@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.filter-wrapper {
+	@apply flex items-center border-b border-gray-500/35 py-2 px-2;
+}
+
+.filter-wrapper label,
+.filter-wrapper select {
+	@apply text-blue-900 font-[400];
+}
+
+.filter-wrapper select:focus {
+	@apply outline-none shadow-none;
+}
