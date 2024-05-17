@@ -8,7 +8,7 @@ import { filterPrice } from './query/filter';
 import { formatRupiah } from './utils/currencyFormat';
 import ContainerItemsCard from './components/ContainerItemsCard';
 
-export default function Home() {
+export default function App() {
 	const [isOpenNow, setIsOpenNow] = useState<boolean | null>(null);
 	const [currPrice, setCurrPrice] = useState<number>(0);
 	const [currCategory, setCurrCategory] = useState('');
@@ -131,7 +131,7 @@ export default function Home() {
 								<option value={0}>Price</option>
 								{filterPrice.map((el) => {
 									return (
-										<option value={el}>{'Rp > ' + formatRupiah(el)}</option>
+										<option key={el} value={el}>{'Rp > ' + formatRupiah(el)}</option>
 									);
 								})}
 							</select>
@@ -147,7 +147,7 @@ export default function Home() {
 								<option value={''}>Categories</option>
 								{categories
 									? categories.map((el) => {
-											return <option value={el}>{el}</option>;
+											return <option key={el} value={el}>{el}</option>;
 									  })
 									: ''}
 							</select>
@@ -164,6 +164,7 @@ export default function Home() {
 				</div>
 			</div>
 			<ContainerItemsCard
+				key={'container_items_card'}
 				item={item}
 				query={query}
 			/>

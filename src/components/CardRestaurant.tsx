@@ -18,11 +18,17 @@ const CardRestaurant: React.FC<RestaurantList> = ({
 	function renderStar(rating: number) {
 		return (
 			<div className='flex items-center gap-x-1'>
-				{Array.from({ length: rating }, () => (
-					<FaStar className='text-cyan-600' />
+				{Array.from({ length: rating }, (_, index: number) => (
+					<FaStar
+						key={index + rating}
+						className='text-cyan-600'
+					/>
 				))}
-				{Array.from({ length: 5 - rating }, () => (
-					<FaRegStar className='text-cyan-600' />
+				{Array.from({ length: 5 - rating }, (_, index: number) => (
+					<FaRegStar
+						key={rating - index}
+						className='text-cyan-600'
+					/>
 				))}
 			</div>
 		);
@@ -37,7 +43,10 @@ const CardRestaurant: React.FC<RestaurantList> = ({
 				<h4 className='text-2xl font-semibold line-clamp-1'>{name}</h4>
 				<div className='my-2'>{renderStar(Number(rating.toFixed(0)))}</div>
 				<p className='font-semibold flex items-center'>
-					<SiGooglemaps className='text-cyan-700' />
+					<SiGooglemaps
+						key={'si_google_maps'}
+						className='text-cyan-700'
+					/>
 					{city}
 				</p>
 				<div className='flex items-center gap-x-2 mt-1'>
@@ -54,7 +63,10 @@ const CardRestaurant: React.FC<RestaurantList> = ({
 					<p className='text-lg'>
 						Rp. {price.lowest} - Rp. {price.highest}
 					</p>
-					<StatusOpen isOpen={isOpen} />
+					<StatusOpen
+						key={'is_open'}
+						isOpen={isOpen}
+					/>
 				</div>
 				<Link
 					className='bg-cyan-900 text-white w-full py-2 block text-center hover:bg-white hover:text-black border border-cyan-900 transition'

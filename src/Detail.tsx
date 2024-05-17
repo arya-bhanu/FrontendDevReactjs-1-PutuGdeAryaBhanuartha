@@ -26,17 +26,23 @@ const Detail = () => {
 	function renderStar(rating: number) {
 		return (
 			<div className='flex items-center gap-x-1'>
-				{Array.from({ length: rating }, () => (
-					<FaStar className='text-cyan-600' />
+				{Array.from({ length: rating }, (_, index: number) => (
+					<FaStar
+						key={rating + index}
+						className='text-cyan-600'
+					/>
 				))}
-				{Array.from({ length: 5 - rating }, () => (
-					<FaRegStar className='text-cyan-600' />
+				{Array.from({ length: 5 - rating }, (_, index: number) => (
+					<FaRegStar
+						key={index - rating}
+						className='text-cyan-600'
+					/>
 				))}
 			</div>
 		);
 	}
 	return (
-		<div>
+		<>
 			<h1 className='text-3xl'>Restaurant Detail</h1>
 			{!query.isLoading && dataDetail ? (
 				<>
@@ -109,14 +115,14 @@ const Detail = () => {
 						<h2 className='text-2xl font-semibold py-3 border-b border-b-gray-400/35'>
 							Comments
 						</h2>
-						<div>
-							{dataDetail.customerReviews.map((el) => {
+						<div className='flex flex-col gap-y-3 mt-5'>
+							{dataDetail.customerReviews.map((el, index: number) => {
 								return (
 									<Comment
 										comment={el.review}
 										date={el.date}
 										name={el.name}
-										key={el.review}
+										key={index + el.name}
 									/>
 								);
 							})}
@@ -124,8 +130,12 @@ const Detail = () => {
 					</section>
 				</>
 			) : null}
-			{query.isLoading ? <SectionLoader /> : null}
-		</div>
+			{query.isLoading ? (
+				<div className='mt-10'>
+					<SectionLoader />
+				</div>
+			) : null}
+		</>
 	);
 };
 

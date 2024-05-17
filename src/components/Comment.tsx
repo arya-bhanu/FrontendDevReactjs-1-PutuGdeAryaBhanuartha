@@ -9,7 +9,7 @@ const Comment = ({
 	date: string;
 }) => {
 	return (
-		<div className='py-3 border-b border-y-gray-300/75'>
+		<div className='py-3 border-b border-y-gray-300/75 shadow-md p-3 rounded-md'>
 			<span className='flex items-center gap-x-2'>
 				<span className='w-8 h-8 flex items-center justify-center border-2 rounded-full border-gray-600/40'>
 					<GoPersonFill />
