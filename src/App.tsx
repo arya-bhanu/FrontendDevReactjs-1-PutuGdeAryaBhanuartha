@@ -1,7 +1,6 @@
 /* eslint-disable no-mixed-spaces-and-tabs */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react';
-import AppLayout from './layouts/AppLayout';
 import { useQuery } from '@tanstack/react-query';
 import { getList } from './query';
 import { RestaurantList } from './index.type';
@@ -19,6 +18,7 @@ export default function Home() {
 	const query = useQuery({
 		queryKey: ['restaurants', currCategory],
 		queryFn: () => getList(currCategory),
+		refetchOnWindowFocus: false,
 	});
 
 	// handle on init browser data
@@ -98,79 +98,75 @@ export default function Home() {
 	};
 
 	return (
-		<AppLayout>
-			<main>
-				<div className='flex flex-col gap-y-7'>
-					<div className='px-10 space-y-5'>
-						<h1 className='text-4xl'>Restaurants</h1>
-						<p className='text-gray-500 max-w-xl '>
-							Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-							eiusmod tempor incididunt ut labore et dolore magna aliqua.
-						</p>
-					</div>
-					<div className='py-3 border-y border-gray-300/65 flex justify-between items-center flex-wrap gap-y-3 mt-1'>
-						<div className='px-10 flex gap-x-5 gap-y-2 flex-wrap items-center'>
-							<span>Filter by:</span>
-							<div className='flex flex-wrap gap-x-4 gap-y-3'>
-								<div className='filter-wrapper'>
-									<input
-										type='radio'
-										id='is_open'
-										className='min-w-0 sm:min-w-6'
-										onChange={() => setIsOpenNow(true)}
-										checked={isOpenNow ? true : false}
-									/>
-									<label htmlFor='is_open'>Open now</label>
-								</div>
-								<div className='filter-wrapper'>
-									<select
-										name='price'
-										id='price'
-										className='min-w-0 sm:min-w-24'
-										onChange={handleChangePriceFilter}
-										value={currPrice}
-									>
-										<option value={0}>Price</option>
-										{filterPrice.map((el) => {
-											return (
-												<option value={el}>{'Rp > ' + formatRupiah(el)}</option>
-											);
-										})}
-									</select>
-								</div>
-								<div className='filter-wrapper'>
-									<select
-										name='category'
-										id='category'
-										className='min-w-0 sm:min-w-40'
-										onChange={handleChangeCategoryFilter}
-										value={currCategory}
-									>
-										<option value={''}>Categories</option>
-										{categories
-											? categories.map((el) => {
-													return <option value={el}>{el}</option>;
-											  })
-											: ''}
-									</select>
-								</div>
-							</div>
+		<div className='flex flex-col gap-y-7'>
+			<div className='px-10 space-y-5'>
+				<h1 className='text-4xl'>Restaurants</h1>
+				<p className='text-gray-500 max-w-xl '>
+					Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+					eiusmod tempor incididunt ut labore et dolore magna aliqua.
+				</p>
+			</div>
+			<div className='py-3 border-y border-gray-300/65 flex justify-between items-center flex-wrap gap-y-3 mt-1'>
+				<div className='px-10 flex gap-x-5 gap-y-2 flex-wrap items-center'>
+					<span>Filter by:</span>
+					<div className='flex flex-wrap gap-x-4 gap-y-3'>
+						<div className='filter-wrapper'>
+							<input
+								type='radio'
+								id='is_open'
+								className='min-w-0 sm:min-w-6'
+								onChange={() => setIsOpenNow(true)}
+								checked={isOpenNow ? true : false}
+							/>
+							<label htmlFor='is_open'>Open now</label>
 						</div>
-						<div className='px-10'>
-							<button
-								onClick={handleClearFilter}
-								className='py-2 w-full px-5 text-white bg-cyan-800 hover:bg-cyan-600 transition'
+						<div className='filter-wrapper'>
+							<select
+								name='price'
+								id='price'
+								className='min-w-0 sm:min-w-24'
+								onChange={handleChangePriceFilter}
+								value={currPrice}
 							>
-								CLEAR ALL
-							</button>
+								<option value={0}>Price</option>
+								{filterPrice.map((el) => {
+									return (
+										<option value={el}>{'Rp > ' + formatRupiah(el)}</option>
+									);
+								})}
+							</select>
+						</div>
+						<div className='filter-wrapper'>
+							<select
+								name='category'
+								id='category'
+								className='min-w-0 sm:min-w-40'
+								onChange={handleChangeCategoryFilter}
+								value={currCategory}
+							>
+								<option value={''}>Categories</option>
+								{categories
+									? categories.map((el) => {
+											return <option value={el}>{el}</option>;
+									  })
+									: ''}
+							</select>
 						</div>
 					</div>
-					<ContainerItemsCard
-						item={item}
-						query={query}
-					/>
 				</div>
-			</main>
-		</AppLayout>
+				<div className='px-10'>
+					<button
+						onClick={handleClearFilter}
+						className='py-2 w-full px-5 text-white bg-cyan-800 hover:bg-cyan-600 transition'
+					>
+						CLEAR ALL
+					</button>
+				</div>
+			</div>
+			<ContainerItemsCard
+				item={item}
+				query={query}
+			/>
+		</div>
 	);
 }
