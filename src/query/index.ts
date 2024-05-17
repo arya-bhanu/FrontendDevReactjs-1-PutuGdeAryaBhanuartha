@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { RestaurantList } from '../index.type';
-import { maxPrice, minPrice } from './filter';
+import { generatePriceRangeInIDR, getRandomBoolean } from '../utils';
 
 export const getList = async (filter?: string) => {
 	let response;
@@ -51,24 +51,12 @@ export const getList = async (filter?: string) => {
 	return null;
 };
 
-// const fetchDetailData = (id: string) => {};
-
-const getRandomBoolean = () => {
-	return Math.random() < 0.5;
-};
-
-function generatePriceRangeInIDR(): { lowest: number; highest: number } {
-	const range = maxPrice - minPrice;
-
-	let lowest = Math.floor(Math.random() * range) + minPrice;
-	let highest = Math.floor(Math.random() * range) + minPrice;
-
-	if (lowest > highest) {
-		// swap values to ensure lowest is always less than or equal to highest
-		const temp = lowest;
-		lowest = highest;
-		highest = temp;
+export const getDetail = async (id?: string) => {
+	const response = await fetch(
+		`https://restaurant-api.dicoding.dev/detail/${id}`
+	);
+	if (response.ok && response.status === 200) {
+		return await response.json();
 	}
-
-	return { lowest, highest };
-}
+	return null;
+};
