@@ -1,3 +1,16 @@
+# How to install and run
+```
+npm install && npm run dev
+```  
+- Open in your browser : http://localhost:5173
+
+# Public API  
+- https://restaurant-api.dicoding.dev 
+
+# React & Node Js Version  
+- React : 18.2.0
+- Node js : 18.19.0  
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
